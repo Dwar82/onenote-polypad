@@ -14,13 +14,12 @@
   <DisplayName DefaultValue="Polypad for OneNote" />
   <Description DefaultValue="Embed the Polypad math manipulatives canvas in a OneNote task pane and drop snapshots onto your page." />
 
-  <!-- ==== IMPORTANT ====
-       Replace every occurrence of the base URL below with wherever you host these files.
-       If you use GitHub Pages it will look like:  https://YOUR-USERNAME.github.io/onenote-polypad
-       Find-and-replace  https://YOUR-USERNAME.github.io/onenote-polypad  throughout this file. -->
+  <!-- Base URL for the hosted files (GitHub Pages):
+       https://dwar82.github.io/onenote-polypad
+       If you ever move hosts, find-and-replace that address throughout this file. -->
 
-  <IconUrl DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/assets/icon-80.png" />
+  <IconUrl DefaultValue="https://dwar82.github.io/onenote-polypad/assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://dwar82.github.io/onenote-polypad/assets/icon-80.png" />
   <SupportUrl DefaultValue="https://polypad.amplify.com/" />
 
   <!-- OneNote host -->
@@ -35,7 +34,7 @@
   </Requirements>
 
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/src/taskpane.html" />
+    <SourceLocation DefaultValue="https://dwar82.github.io/onenote-polypad/src/taskpane.html" />
   </DefaultSettings>
 
   <Permissions>ReadWriteDocument</Permissions>
@@ -81,13 +80,13 @@
 
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16" DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/assets/icon-16.png" />
-        <bt:Image id="Icon.32" DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/assets/icon-32.png" />
-        <bt:Image id="Icon.80" DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/assets/icon-80.png" />
+        <bt:Image id="Icon.16" DefaultValue="https://dwar82.github.io/onenote-polypad/assets/icon-16.png" />
+        <bt:Image id="Icon.32" DefaultValue="https://dwar82.github.io/onenote-polypad/assets/icon-32.png" />
+        <bt:Image id="Icon.80" DefaultValue="https://dwar82.github.io/onenote-polypad/assets/icon-80.png" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="Commands.Url" DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/src/commands.html" />
-        <bt:Url id="Taskpane.Url" DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/src/taskpane.html" />
+        <bt:Url id="Commands.Url" DefaultValue="https://dwar82.github.io/onenote-polypad/src/commands.html" />
+        <bt:Url id="Taskpane.Url" DefaultValue="https://dwar82.github.io/onenote-polypad/src/taskpane.html" />
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="Group.Label" DefaultValue="Polypad" />
