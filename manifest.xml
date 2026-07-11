@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+  xsi:type="TaskPaneApp">
+
+  <!-- Unique ID for this add-in. Fine to keep for personal use. -->
+  <Id>b1e7c3a2-4f6d-4c9a-9e11-2a7f5d8c3b90</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Dustin Warren</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Polypad for OneNote" />
+  <Description DefaultValue="Embed the Polypad math manipulatives canvas in a OneNote task pane and drop snapshots onto your page." />
+
+  <!-- ==== IMPORTANT ====
+       Replace every occurrence of the base URL below with wherever you host these files.
+       If you use GitHub Pages it will look like:  https://YOUR-USERNAME.github.io/onenote-polypad
+       Find-and-replace  https://YOUR-USERNAME.github.io/onenote-polypad  throughout this file. -->
+
+  <IconUrl DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/assets/icon-80.png" />
+  <SupportUrl DefaultValue="https://polypad.amplify.com/" />
+
+  <!-- OneNote host -->
+  <Hosts>
+    <Host Name="Notebook" />
+  </Hosts>
+
+  <Requirements>
+    <Sets DefaultMinVersion="1.1">
+      <Set Name="OneNoteApi" MinVersion="1.1" />
+    </Sets>
+  </Requirements>
+
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/src/taskpane.html" />
+  </DefaultSettings>
+
+  <Permissions>ReadWriteDocument</Permissions>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Hosts>
+      <Host xsi:type="Notebook">
+        <DesktopFormFactor>
+          <!-- File that hosts any UI-less command functions. Required even if unused. -->
+          <FunctionFile resid="Commands.Url" />
+
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <OfficeTab id="TabHome">
+              <Group id="Polypad.Group">
+                <Label resid="Group.Label" />
+                <Icon>
+                  <bt:Image size="16" resid="Icon.16" />
+                  <bt:Image size="32" resid="Icon.32" />
+                  <bt:Image size="80" resid="Icon.80" />
+                </Icon>
+                <Control xsi:type="Button" id="Polypad.OpenButton">
+                  <Label resid="OpenButton.Label" />
+                  <Supertip>
+                    <Title resid="OpenButton.Label" />
+                    <Description resid="OpenButton.Tooltip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.16" />
+                    <bt:Image size="32" resid="Icon.32" />
+                    <bt:Image size="80" resid="Icon.80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>PolypadTaskpane</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url" />
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="Icon.16" DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/assets/icon-16.png" />
+        <bt:Image id="Icon.32" DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/assets/icon-32.png" />
+        <bt:Image id="Icon.80" DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/assets/icon-80.png" />
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="Commands.Url" DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/src/commands.html" />
+        <bt:Url id="Taskpane.Url" DefaultValue="https://YOUR-USERNAME.github.io/onenote-polypad/src/taskpane.html" />
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="Group.Label" DefaultValue="Polypad" />
+        <bt:String id="OpenButton.Label" DefaultValue="Open Polypad" />
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="OpenButton.Tooltip" DefaultValue="Open the Polypad manipulatives canvas in a side pane." />
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Polypad for OneNote — hosting check</title>
+  <style>
+    body { font-family: "Segoe UI", system-ui, sans-serif; max-width: 640px; margin: 60px auto; padding: 0 20px; color: #1f2330; line-height: 1.6; }
+    .ok { background: #e8f7ee; border: 1px solid #50c878; border-radius: 8px; padding: 16px 20px; }
+    .ok h1 { margin: 0 0 6px; font-size: 20px; color: #1c7a44; }
+    code { background: #f0f3f9; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+    a.btn { display: inline-block; margin-top: 14px; background: #2f6fed; color: #fff; text-decoration: none; padding: 9px 16px; border-radius: 6px; }
+    ul { padding-left: 20px; }
+    .muted { color: #6b7280; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="ok">
+    <h1>&#10003; Hosting works</h1>
+    <div>If you can read this, GitHub Pages is serving your add-in files correctly.</div>
+  </div>
+
+  <p>Your add-in's base URL is the address of this page. It should look like:</p>
+  <p><code>https://YOUR-USERNAME.github.io/onenote-polypad/</code></p>
+
+  <p>Next steps:</p>
+  <ul>
+    <li>Make sure <code>manifest.xml</code> uses that exact base URL (10 places).</li>
+    <li>Then load <code>manifest.xml</code> into OneNote via <em>Insert &rarr; Add-ins</em>.</li>
+  </ul>
+
+  <a class="btn" href="src/taskpane.html">Preview the Polypad pane &rarr;</a>
+  <p class="muted">The preview opens the pane outside OneNote, so the "Insert snapshot into page" button
+  will be disabled &mdash; that's expected. Everything else should work.</p>
+</body>
+</html>

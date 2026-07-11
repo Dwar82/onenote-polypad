@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Polypad for OneNote</title>
+
+  <!-- Office JS: required for any add-in -->
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+
+  <!-- Polypad JS API (free tier; personal, non-commercial use).
+       If a newer version is released, bump the version number here. -->
+  <script src="https://static.mathigon.org/api/polypad-en-v5.0.5.js"></script>
+
+  <link rel="stylesheet" href="taskpane.css" />
+</head>
+<body>
+  <header class="bar">
+    <div class="title">Polypad</div>
+    <div id="status" class="status">Loading…</div>
+  </header>
+
+  <div id="toolbar" class="toolbar">
+    <button id="btnInsert" class="btn primary" disabled>Insert snapshot into page</button>
+    <button id="btnDownload" class="btn" disabled>Download PNG</button>
+    <button id="btnSave" class="btn" disabled>Save canvas</button>
+    <button id="btnLoad" class="btn" disabled>Load canvas</button>
+    <button id="btnClear" class="btn" disabled>Clear</button>
+  </div>
+
+  <!-- Polypad renders here -->
+  <div id="polypad"></div>
+
+  <!-- Slide-up panel for saving/loading the canvas JSON -->
+  <div id="jsonPanel" class="panel hidden">
+    <div class="panel-row">
+      <strong id="jsonTitle">Canvas data</strong>
+      <button id="jsonClose" class="btn small">Close</button>
+    </div>
+    <p class="hint" id="jsonHint">Copy this text somewhere safe to reopen your canvas later.</p>
+    <textarea id="jsonBox" spellcheck="false"></textarea>
+    <div class="panel-row">
+      <button id="jsonCopy" class="btn small">Copy</button>
+      <button id="jsonApply" class="btn small primary hidden">Load this canvas</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="taskpane.js"></script>
+</body>
+</html>
