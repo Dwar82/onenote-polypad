@@ -21,36 +21,68 @@
     toastTimer = setTimeout(() => t.classList.add("hidden"), ms || 2600);
   }
 
+  // Show the actual failure reason on screen — no more guessing.
+  function showError(msg) {
+    $("errMsg").textContent = msg;
+    $("errBox").classList.remove("hidden");
+    setStatus("Error");
+    console.error("[Polypad add-in]", msg);
+  }
+
   function enableButtons(on) {
-    ["btnInsert", "btnDownload", "btnSave", "btnLoad", "btnClear"].forEach((id) => {
+    ["btnDownload", "btnSave", "btnLoad", "btnClear"].forEach((id) => {
       $(id).disabled = !on;
     });
-    // "Insert into page" only makes sense inside OneNote
+    // "Insert into page" only works inside OneNote
     $("btnInsert").disabled = !on || !isOneNote;
     if (!isOneNote) $("btnInsert").title = "Only available when running inside OneNote";
   }
 
   // ---- Polypad setup ---------------------------------------------------------
   function initPolypad() {
-    // Show the full manipulative library. Omit apiKey for the free tier.
-    pp = Polypad.create($("polypad"), {
-      // apiKey: "",           // add a Mathigon-issued key here only if you get one
-      sidebarSettings: true,
-      toolbar: true,
-      settings: true,
-      initial: { options: { grid: "square-grid", canvas: "infinite" } }
+    if (typeof Polypad === "undefined") {
+      showError("The Polypad library did not load. Check your internet connection, " +
+                "and that static.mathigon.org isn't blocked by your school's network.");
+      return false;
+    }
+
+    const host = $("polypad");
+
+    try {
+      // Signature is Polypad.create(element, options).
+      // Omit apiKey — the free tier covers personal, non-commercial use.
+      pp = Polypad.create(host, {
+        sidebarTiles: true,
+        sidebarSettings: true,
+        toolbar: true,
+        settings: true
+      });
+    } catch (err) {
+      showError("Polypad.create() failed: " + (err && err.message ? err.message : String(err)));
+      return false;
+    }
+
+    if (!pp) {
+      showError("Polypad.create() returned nothing.");
+      return false;
+    }
+
+    // Optional extras — never let these kill startup.
+    try { if (pp.bindKeyboardEvents) pp.bindKeyboardEvents(); } catch (e) { console.warn(e); }
+    try { if (pp.setOptions) pp.setOptions({ grid: "square-grid" }); } catch (e) { console.warn(e); }
+
+    window.addEventListener("resize", () => {
+      try { if (pp && pp.resize) pp.resize(); } catch (e) { /* ignore */ }
     });
 
-    if (pp.bindKeyboardEvents) pp.bindKeyboardEvents();
-    if (Polypad.loadFonts) Polypad.loadFonts();
+    // Nudge a resize once layout has settled (flex containers can start at 0 height).
+    setTimeout(() => { try { pp.resize && pp.resize(); } catch (e) {} }, 250);
 
-    // Keep Polypad sized to the pane
-    window.addEventListener("resize", () => pp && pp.resize && pp.resize());
+    return true;
   }
 
   // ---- Get a PNG data URI of the current canvas -----------------------------
   async function getPng(width, height) {
-    // PolypadInstance.image(width, height, type) -> Promise<dataURI>
     return await pp.image(width || 1400, height || 900, "png");
   }
 
@@ -62,7 +94,6 @@
       const dataUrl = await getPng(1400, 900);
       await OneNote.run(async (context) => {
         const page = context.application.getActivePage();
-        // addOutline(left, top, html) — drop the snapshot as an image outline
         page.addOutline(40, 40,
           '<p><img src="' + dataUrl + '" alt="Polypad snapshot" width="600" /></p>');
         await context.sync();
@@ -122,8 +153,7 @@
     const raw = $("jsonBox").value.trim();
     if (!raw) { toast("Nothing to load."); return; }
     try {
-      const data = JSON.parse(raw);
-      pp.unSerialize(data);
+      pp.unSerialize(JSON.parse(raw));
       $("jsonPanel").classList.add("hidden");
       toast("Canvas loaded.");
     } catch (err) {
@@ -133,9 +163,8 @@
   }
 
   async function copyJson() {
-    const text = $("jsonBox").value;
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText($("jsonBox").value);
       toast("Copied to clipboard.");
     } catch (e) {
       $("jsonBox").select();
@@ -160,17 +189,29 @@
     $("jsonApply").addEventListener("click", applyLoad);
   }
 
-  Office.onReady((info) => {
-    isOneNote = info && info.host === Office.HostType.OneNote;
-    try {
-      initPolypad();
-      wireUi();
-      enableButtons(true);
+  // ---- Startup ---------------------------------------------------------------
+  // Polypad is started independently of Office, so the pane still works when
+  // previewed in a plain browser tab (and so an Office hiccup can't block it).
+  function start() {
+    wireUi();
+    const ok = initPolypad();
+    if (!ok) return;
+    enableButtons(true);
+    setStatus(isOneNote ? "Ready" : "Ready (preview mode)");
+  }
+
+  // Detect OneNote if Office is present, but never block on it.
+  if (typeof Office !== "undefined" && Office.onReady) {
+    Office.onReady((info) => {
+      isOneNote = !!(info && info.host === Office.HostType.OneNote);
+      enableButtons(!!pp);
       setStatus(isOneNote ? "Ready" : "Ready (preview mode)");
-    } catch (err) {
-      console.error(err);
-      setStatus("Failed to load Polypad");
-      toast("Polypad failed to load. Check your internet connection.", 5000);
-    }
-  });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
 })();

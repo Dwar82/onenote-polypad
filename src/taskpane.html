@@ -5,12 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Polypad for OneNote</title>
 
-  <!-- Office JS: required for any add-in -->
+  <!-- Office JS: required for any add-in. This one is fine in the head. -->
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-
-  <!-- Polypad JS API (free tier; personal, non-commercial use).
-       If a newer version is released, bump the version number here. -->
-  <script src="https://static.mathigon.org/api/polypad-en-v5.0.5.js"></script>
 
   <link rel="stylesheet" href="taskpane.css" />
 </head>
@@ -31,6 +27,12 @@
   <!-- Polypad renders here -->
   <div id="polypad"></div>
 
+  <!-- Visible error box, so failures are diagnosable instead of silent -->
+  <div id="errBox" class="errbox hidden">
+    <strong>Polypad couldn't start.</strong>
+    <div id="errMsg" class="errmsg"></div>
+  </div>
+
   <!-- Slide-up panel for saving/loading the canvas JSON -->
   <div id="jsonPanel" class="panel hidden">
     <div class="panel-row">
@@ -47,6 +49,11 @@
 
   <div id="toast" class="toast hidden"></div>
 
+  <!-- IMPORTANT: Polypad's docs require this script to be in the <body>, not the <head>.
+       Loading it in the head causes it to fail to initialise. -->
+  <script src="https://static.mathigon.org/api/polypad-en-v5.0.5.js"></script>
+
+  <!-- Our code runs last, so both Office and Polypad are defined by now. -->
   <script src="taskpane.js"></script>
 </body>
 </html>

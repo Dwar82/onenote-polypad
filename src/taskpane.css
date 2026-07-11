@@ -63,9 +63,20 @@ body {
 
 #polypad {
   flex: 1 1 auto;
-  min-height: 0;
+  min-height: 300px;   /* Polypad needs a real height; a flex child can collapse to 0 */
   width: 100%;
 }
+
+.errbox {
+  margin: 12px;
+  padding: 12px 14px;
+  border: 1px solid #f0b4b4;
+  background: #fdeaea;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #8a1f1f;
+}
+.errmsg { margin-top: 6px; font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
 
 .panel {
   position: absolute;
